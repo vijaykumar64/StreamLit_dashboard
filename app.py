@@ -21,21 +21,51 @@ st.set_page_config(
 )
 
 # Custom CSS for better look
+# Custom CSS for better look
+# Custom CSS for better look
+# Custom CSS for better look
 st.markdown("""
     <style>
-        .main {
-            background-color: #f9f9f9;
+        /* Wrapper fix for Streamlit text input */
+        div[data-baseweb="input"] {
+            border: 2px solid #4CAF50 !important;
+            border-radius: 10px !important;
+            background-color: #1e1e1e !important;
+            box-shadow: none !important;
         }
+
+        /* Ensure green border stays even on focus */
+        div[data-baseweb="input"]:focus-within {
+            border: 2px solid #4CAF50 !important;
+            box-shadow: 0 0 5px #4CAF50 !important; /* optional glow */
+        }
+
+        /* Input field inside */
         .stTextInput input {
-            border: 2px solid #4CAF50;
-            border-radius: 10px;
+            color: white !important;
+            background-color: #1e1e1e !important;
+            height: 42px !important;
+            padding-left: 10px !important;
         }
-        .stDataFrame {
-            border: 2px solid #ddd;
-            border-radius: 10px;
+
+        /* Button styling */
+        div[data-testid="stButton"] > button {
+            background: #4CAF50 !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 10px !important;
+            font-size: 18px !important;
+            height: 40px !important;
+            width: 120px !important;
+            font-weight: bold !important;
         }
+        div[data-testid="stButton"] > button:hover {
+            background: #45a049 !important;
+        }
+        .stButton { text-align: center; }
     </style>
 """, unsafe_allow_html=True)
+
 
 # -------------------------
 # Streamlit Dashboard
@@ -44,9 +74,12 @@ st.title("🎓 Student College Allotment Dashboard")
 st.markdown("Welcome! Enter your **Student ID** below to view your allotment details.")
 
 # Input box for Student ID
-student_id = st.text_input("🔑 Enter Student ID:")
+student_id = st.text_input("🔑 Enter Student ID:",placeholder="eg: 5196578828")
 
-if student_id:
+# Search button below the input
+search = st.button("Search")
+
+if search and student_id:
     result = df[df["Student_ID"].astype(str) == str(student_id)]
     
     if not result.empty:
@@ -68,7 +101,6 @@ if student_id:
         st.markdown("---")
         st.subheader("📊 Full Record")
         st.dataframe(result, use_container_width=True)
-        
     else:
         st.error("❌ Student ID not found in records.")
 
